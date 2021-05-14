@@ -1,16 +1,28 @@
 package com.lucasmadeira.personapi.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.lucasmadeira.personapi.dto.MessageResponse;
+import com.lucasmadeira.personapi.entity.Person;
+import com.lucasmadeira.personapi.repository.PersonRepository;
+import com.lucasmadeira.personapi.service.PersonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/people")
 public class PersonController {
 
-        @GetMapping
-        public String getBook(){
-            return "O Palmeiras não tem mundial, Teste em produção é vida";
+    private PersonService personService;
+
+    @Autowired
+    public PersonController(PersonService personService){
+        this.personService = personService;
+    }
+
+        @PostMapping
+        @ResponseStatus(HttpStatus.CREATED)
+        public MessageResponse createPerson(@RequestBody  Person person){
+           return personService.createPerson(person);
         }
 
 }
