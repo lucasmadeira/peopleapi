@@ -1,27 +1,33 @@
 package com.lucasmadeira.personapi.service;
 
-import com.lucasmadeira.personapi.dto.MessageResponse;
+import com.lucasmadeira.personapi.dto.request.PersonDTO;
+import com.lucasmadeira.personapi.dto.response.MessageResponse;
 import com.lucasmadeira.personapi.entity.Person;
+import com.lucasmadeira.personapi.mapper.PersonMapper;
 import com.lucasmadeira.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class PersonService {
 
     private PersonRepository personRepository;
 
+    private final PersonMapper personMapper = PersonMapper.INSTANCE;
+
     @Autowired
-    public PersonService(PersonRepository personRepository){
+    public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
-    public MessageResponse createPerson(Person person){
-        Person savedPerson = personRepository.save(person);
+    public MessageResponse createPerson(PersonDTO personDTO) {
+
+        Person personToSave = personMapper.toModel(personDTO);
+
+        Person savedPerson = personRepository.save(personToSave);
         return MessageResponse.
                 builder().
-                message("Created person with ID"+ savedPerson.getId()).
+                message("Created person with ID" + savedPerson.getId()).
                 build();
     }
 }
