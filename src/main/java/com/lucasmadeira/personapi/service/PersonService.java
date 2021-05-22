@@ -3,10 +3,15 @@ package com.lucasmadeira.personapi.service;
 import com.lucasmadeira.personapi.dto.request.PersonDTO;
 import com.lucasmadeira.personapi.dto.response.MessageResponse;
 import com.lucasmadeira.personapi.entity.Person;
+import com.lucasmadeira.personapi.exception.PersonNotFoundException;
 import com.lucasmadeira.personapi.mapper.PersonMapper;
 import com.lucasmadeira.personapi.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -29,5 +34,18 @@ public class PersonService {
                 builder().
                 message("Created person with ID" + savedPerson.getId()).
                 build();
+    }
+
+    public List<PersonDTO> listAll() {
+        List<Person> allPeople = personRepository.findAll();
+        return allPeople.stream().
+                map(personMapper::toDTO).
+                collect(Collectors.toList());
+
+    }
+
+    public PersonDTO findById(Long id) throws PersonNotFoundException {
+        Person person = personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
+        return personMapper.toDTO(person);
     }
 }
