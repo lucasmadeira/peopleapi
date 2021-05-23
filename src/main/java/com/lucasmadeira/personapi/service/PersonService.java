@@ -1,7 +1,7 @@
 package com.lucasmadeira.personapi.service;
 
 import com.lucasmadeira.personapi.dto.request.PersonDTO;
-import com.lucasmadeira.personapi.dto.response.MessageResponse;
+import com.lucasmadeira.personapi.dto.response.MessageResponseDTO;
 import com.lucasmadeira.personapi.entity.Person;
 import com.lucasmadeira.personapi.exception.PersonNotFoundException;
 import com.lucasmadeira.personapi.mapper.PersonMapper;
@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,12 +21,12 @@ public class PersonService {
 
     private final PersonMapper personMapper = PersonMapper.INSTANCE;
 
-    public MessageResponse createPerson(PersonDTO personDTO) {
+    public MessageResponseDTO createPerson(PersonDTO personDTO) {
 
         Person personToSave = personMapper.toModel(personDTO);
 
         Person savedPerson = personRepository.save(personToSave);
-        return createMessageResponse(savedPerson.getId(), "Created person with ID");
+        return createMessageResponse(savedPerson.getId(), "Person successfully created with ID ");
     }
 
     public List<PersonDTO> listAll() {
@@ -48,14 +47,14 @@ public class PersonService {
         personRepository.deleteById(id);
     }
 
-    public MessageResponse updateById(Long id, PersonDTO personDTO) throws PersonNotFoundException{
+    public MessageResponseDTO updateById(Long id, PersonDTO personDTO) throws PersonNotFoundException{
 
         verifyIfExists(id);
 
         Person personToUpdate = personMapper.toModel(personDTO);
 
         Person savedPerson = personRepository.save(personToUpdate);
-        return createMessageResponse(savedPerson.getId(), "Updated person with ID");
+        return createMessageResponse(savedPerson.getId(), "Updated person with ID ");
 
     }
 
@@ -63,10 +62,10 @@ public class PersonService {
         return personRepository.findById(id).orElseThrow(() -> new PersonNotFoundException(id));
     }
 
-    private MessageResponse createMessageResponse(Long id, String s) {
-        return MessageResponse.
+    private MessageResponseDTO createMessageResponse(Long id, String s) {
+        return MessageResponseDTO.
                 builder().
-                message(s + id).
+                message(s +id).
                 build();
     }
 }

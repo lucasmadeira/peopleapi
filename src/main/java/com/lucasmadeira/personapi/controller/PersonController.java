@@ -1,8 +1,7 @@
 package com.lucasmadeira.personapi.controller;
 
 import com.lucasmadeira.personapi.dto.request.PersonDTO;
-import com.lucasmadeira.personapi.dto.response.MessageResponse;
-import com.lucasmadeira.personapi.entity.Person;
+import com.lucasmadeira.personapi.dto.response.MessageResponseDTO;
 import com.lucasmadeira.personapi.exception.PersonNotFoundException;
 import com.lucasmadeira.personapi.service.PersonService;
 import lombok.AllArgsConstructor;
@@ -22,7 +21,7 @@ public class PersonController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public MessageResponse createPerson(@RequestBody @Valid PersonDTO personDTO){
+    public MessageResponseDTO createPerson(@RequestBody @Valid PersonDTO personDTO){
         return personService.createPerson(personDTO);
     }
 
@@ -43,7 +42,7 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public MessageResponse updateById(@PathVariable Long id, @RequestBody @Valid PersonDTO personDTO) throws PersonNotFoundException {
+    public MessageResponseDTO updateById(@PathVariable Long id, @RequestBody @Valid PersonDTO personDTO) throws PersonNotFoundException {
         return personService.updateById(id, personDTO);
     }
 
