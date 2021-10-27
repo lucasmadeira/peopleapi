@@ -1,7 +1,7 @@
 <h2>Desenvolvendo um sistema de gerenciamento de pessoas em API REST com Spring Boot</h2>
 
 
-tópicos abordados:
+tópicos abordados neste projeto:
 
 * Setup inicial de projeto com o Spring Boot Initialzr
 * Criação de modelo de dados para o mapeamento de entidades em bancos de dados
